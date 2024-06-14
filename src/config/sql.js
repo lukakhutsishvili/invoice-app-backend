@@ -10,7 +10,13 @@ const pool = new Pool({
 });
 
 export const createTable = async () => {
-  return await pool.query(
-    " CREATE TABLE IF NOT EXISTS products(id SERIAL PRIMARY KEY, title TEXT, price INT)  "
-  );
+  try {
+    await pool.query(
+      "CREATE TABLE IF NOT EXISTS products(id SERIAL PRIMARY KEY, title TEXT, price INT)"
+    );
+    console.log("Table created successfully or already exists.");
+  } catch (error) {
+    console.error("Error creating table:", error);
+    throw error; // Re-throw the error after logging it
+  }
 };
