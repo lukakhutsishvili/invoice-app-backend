@@ -13,8 +13,6 @@ const pool = new Pool({
   password: "lIVTWjkyLDNgVTPCuxCxjFKLgaSqqPuY",
 });
 
-
-
 async function init() {
   try {
     await createTable();
@@ -26,8 +24,12 @@ async function init() {
 }
 
 function serverStart() {
-  app.get("/", (req, res) => {
-    return res.status(201).json("it works");
+  app.get("/api/products", async (req, res) => {
+    try {
+      const resulQuery = await pool.query("SELECT * FROM products");
+      const row = resulQuery.rows;
+      return res.status(200).json(row);
+    } catch (error) {}
   });
   app.listen(3000, () => {
     console.log("Server started on port 3000");

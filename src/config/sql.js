@@ -20,3 +20,5 @@ export const createTable = async () => {
     throw error; // Re-throw the error after logging it
   }
 };
+
+export default pool;
