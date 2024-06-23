@@ -1,6 +1,7 @@
 import express from "express";
 import { createTable } from "./config/sql.js";
 import pkg from "pg";
+import bodyParser from "body-parser";
 const { Pool } = pkg;
 
 const app = express();
@@ -24,16 +25,30 @@ async function init() {
 }
 
 function serverStart() {
+  app.use(bodyParser.json());
   app.get("/api/products", async (req, res) => {
     try {
       const resulQuery = await pool.query("SELECT * FROM products");
-      const row = resulQuery.rows;
-      return res.status(200).json(row);
-    } catch (error) {}
+      const rows = resulQuery.rows;
+      return res.status(200).json(rows);
+    } catch (error) {
+      return res.status(401).json(error);
+    }
   });
-  app.listen(3000, () => {
-    console.log("Server started on port 3000");
+  app.post("api/products", async (req, res) => {
+    const { title, price } = req.body;
+    try {
+      const resulQuery = await pool.query(
+        "INSERT INTO products(title, price) VALUES($1, $2)"
+      );
+
+      const row = resulQuery.rows[0];
+      return res.status(201).json(row);
+    } catch (error) {
+      return res.status(401).json(error);
+    }
   });
+  app.listen(3000);
 }
 
 init();
