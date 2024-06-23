@@ -26,7 +26,7 @@ async function init() {
 
 function serverStart() {
   app.use(bodyParser.json());
-  app.get("/api/products", async (req, res) => {
+  app.get("/api/product", async (req, res) => {
     try {
       const resulQuery = await pool.query("SELECT * FROM products");
       const rows = resulQuery.rows;
