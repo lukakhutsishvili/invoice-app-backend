@@ -41,7 +41,8 @@ function serverStart() {
     const { title, price } = req.body;
     try {
       const resulQuery = await pool.query(
-        "INSERT INTO products(title, price) VALUES($1, $2)"
+        "INSERT INTO products(title, price) VALUES($1, $2)",
+        [title, price]
       );
 
       const row = resulQuery.rows[0];
