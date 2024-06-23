@@ -3,6 +3,7 @@ import { createTable } from "./config/sql.js";
 import pkg from "pg";
 import bodyParser from "body-parser";
 const { Pool } = pkg;
+import cors from "cors";
 
 const app = express();
 
@@ -26,7 +27,7 @@ async function init() {
 
 function serverStart() {
   app.use(bodyParser.json());
-  app.use(corse());
+  app.use(cors());
   app.get("/api/product", async (req, res) => {
     try {
       const resulQuery = await pool.query("SELECT * FROM products");
