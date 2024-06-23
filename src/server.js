@@ -37,7 +37,7 @@ function serverStart() {
       return res.status(401).json(error);
     }
   });
-  app.post("api/products", async (req, res) => {
+  app.post("/api/products", async (req, res) => {
     const { title, price } = req.body;
     try {
       const resulQuery = await pool.query(
